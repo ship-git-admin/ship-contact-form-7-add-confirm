@@ -1,0 +1,19 @@
+.wpcf7c-elm-step2 {}
+.wpcf7c-elm-step3 {}
+.wpcf7 .ajax-loader{}
+
+.wpcf7c-hide {display: none;}
+.wpcf7c-force-hide {display: none !important;}
+.wpcf7c-conf {background-color: #999999; color: black; border: 1px solid #333333;}
+
+/* Confirmation-step UX: keep values readable while removing the input-field appearance. */
+.wpcf7c-step2-active input.wpcf7c-conf,
+.wpcf7c-step2-active textarea.wpcf7c-conf,
+.wpcf7c-step2-active select.wpcf7c-conf {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: inherit;
+  opacity: 1;
+  cursor: default;
+}
