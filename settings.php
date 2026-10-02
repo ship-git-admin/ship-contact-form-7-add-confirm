@@ -18,8 +18,6 @@ add_action( 'plugins_loaded', 'wpcf7c', 11 );
 function wpcf7c() {
 	wpcf7c_load_textdomain();
 	wpcf7c_load_modules();
-
-	nocache_headers();
 }
 
 function wpcf7c_nocache_headers($headers) {

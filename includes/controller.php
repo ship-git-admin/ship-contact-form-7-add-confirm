@@ -26,7 +26,14 @@ function wpcf7c_control_init() {
 		remove_filter( 'wpcf7_ajax_json_echo', 'wpcf7_quiz_ajax_refill' );
 	}
 
-	add_filter( 'nocache_headers', "wpcf7c_nocache_headers", 10, 1 );
+	$confirm_step = '';
+	if ( isset( $_POST['_wpcf7c'] ) && is_string( $_POST['_wpcf7c'] ) ) {
+		$confirm_step = sanitize_key( wp_unslash( $_POST['_wpcf7c'] ) );
+	}
+
+	if ( in_array( $confirm_step, array( 'step1', 'step2' ), true ) ) {
+		add_filter( 'nocache_headers', 'wpcf7c_nocache_headers', 10, 1 );
+	}
 	add_action( 'wpcf7_enqueue_scripts', 'wpcf7c_enqueue_scripts' );
 	add_action( 'wpcf7_enqueue_styles', 'wpcf7c_enqueue_styles' );
 

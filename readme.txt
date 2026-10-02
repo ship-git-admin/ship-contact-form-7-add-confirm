@@ -4,7 +4,7 @@ Donate link:
 Tags: contact, form, contact form
 Requires at least: 3.8
 Tested up to: 4.9.3
-Stable tag: 5.1
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: contact-form-7-add-confirm
@@ -38,6 +38,10 @@ An answer to that question.
 
 
 == Changelog ==
+1.0.0
+ GitHub Release を使ったプラグイン画面からの更新に対応
+ 通常ページへの no-cache ヘッダー付与を停止し、確認ステップの応答に限定
+
 1.3.8.5
  言語ファイルの読み込みバグ対応
  Javascript非対応のブラウザの場合、送信ボタンを初期から表示するように変更
@@ -148,5 +152,5 @@ An answer to that question.
  Contact Form 7 ver.5.0に対応
  
 == Upgrade notice ==
-5.1
- jQuery3.0対応としてscripts.js の size() を length に変更
+1.0.0
+ SHIP管理のGitHub更新対応と、通常ページのno-cache範囲を修正

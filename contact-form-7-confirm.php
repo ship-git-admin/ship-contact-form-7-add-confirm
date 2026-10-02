@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: Ship Contact Form 7 add confirm (compatibility fork)
-Plugin URI: http://www.eyeta.jp/archives/908
+Plugin URI: https://github.com/ship-git-admin/ship-contact-form-7-add-confirm
 Description: Add confirm step to contact form 7
 Author: SHIPChatGPT
 Author URI: http://www.eyeta.jp/
 Text Domain: contact-form-7-add-confirm
 Domain Path: /languages/
-Version: 5.3
+Version: 1.0.0
 */
 
 /*  Copyright 2014- Yuichiro ABE (email: y.abe at eyeta.jp)
@@ -28,7 +28,7 @@ Version: 5.3
 */
 
 
-define( 'WPCF7C_VERSION', '5.3' );
+define( 'WPCF7C_VERSION', '1.0.0' );
 
 if ( ! defined( 'WPCF7C_PLUGIN_BASENAME' ) )
 	define( 'WPCF7C_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -44,6 +44,24 @@ if ( ! defined( 'WPCF7C_PLUGIN_URL' ) )
 
 if ( ! defined( 'WPCF7C_PLUGIN_MODULES_DIR' ) )
 	define( 'WPCF7C_PLUGIN_MODULES_DIR', WPCF7C_PLUGIN_DIR . '/modules' );
+
+/**
+ * Load the GitHub update checker only in update-capable contexts. This keeps
+ * its classes and update hooks out of ordinary front-end requests.
+ */
+if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+	$wpcf7c_update_checker = WPCF7C_PLUGIN_DIR . '/lib/plugin-update-checker/plugin-update-checker.php';
+
+	if ( is_readable( $wpcf7c_update_checker ) ) {
+		require_once $wpcf7c_update_checker;
+
+		\YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+			'https://github.com/ship-git-admin/ship-contact-form-7-add-confirm',
+			__FILE__,
+			'ship-contact-form-7-add-confirm'
+		)->setBranch( 'main' );
+	}
+}
 
 
 
