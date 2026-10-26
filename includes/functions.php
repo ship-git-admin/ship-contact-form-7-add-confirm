@@ -121,6 +121,13 @@ function wpcf7c_should_enqueue_assets() {
 				break;
 			}
 		}
+
+		// The events template renders this form with do_shortcode() after
+		// wp_enqueue_scripts has run, so post-content scanning cannot find it.
+		// Load the assets only while the event's CF7 application form is shown.
+		if ( ! $should_enqueue && wpcf7c_event_template_uses_cf7() ) {
+			$should_enqueue = true;
+		}
 	}
 
 	$should_enqueue = (bool) apply_filters(
@@ -130,6 +137,39 @@ function wpcf7c_should_enqueue_assets() {
 	);
 
 	return $should_enqueue;
+}
+
+
+/**
+ * Detect the CF7 form rendered by the site's events template.
+ *
+ * Legacy events without a provider value use CF7. Events that use Formrun,
+ * hide the application form, or have ended do not need AddConfirm assets.
+ *
+ * @return bool Whether the current event template will render the CF7 form.
+ */
+function wpcf7c_event_template_uses_cf7() {
+	if ( ! is_singular( 'events' ) || ! function_exists( 'get_field' ) ) {
+		return false;
+	}
+
+	$post_id = get_queried_object_id();
+
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$show_form = get_field( 'EntryData_ContactBtn', $post_id );
+	$is_finished = get_field( 'EntryData_Fin', $post_id );
+
+	if ( empty( $show_form ) || ! empty( $is_finished ) ) {
+		return false;
+	}
+
+	$form_provider = get_field( 'EntryData_ApplicationFormType', $post_id );
+
+	// Existing events without the provider field default to Contact Form 7.
+	return empty( $form_provider ) || 'contact_form_7' === $form_provider;
 }
 
 

@@ -4,7 +4,7 @@ Donate link:
 Tags: contact, form, contact form
 Requires at least: 3.8
 Tested up to: 4.9.3
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: contact-form-7-add-confirm
@@ -38,6 +38,10 @@ An answer to that question.
 
 
 == Changelog ==
+1.0.2
+ イベントテンプレートがPHPから出力するCF7フォームも読み込み判定に追加
+ CF7選択かつ申込フォーム表示中・受付終了前のイベントページに限定して確認用CSS/JSを読み込み
+
 1.0.1
  CF7ショートコードまたはブロックがあるページだけで確認画面用CSS/JSを読み込むように変更
  ウィジェット、ページビルダー、テンプレート向けの読み込み判定フィルターを追加
