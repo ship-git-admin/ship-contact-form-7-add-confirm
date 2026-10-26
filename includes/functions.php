@@ -64,6 +64,75 @@ function wpcf7c_load_modules() {
 }
 
 
+/**
+ * Determine whether this request can render a Contact Form 7 form.
+ *
+ * Assets are printed before template output, so inspect the main query's
+ * content for the CF7 shortcode or block. Sites that render forms from
+ * widgets, page-builder metadata, or templates can override this with the
+ * wpcf7c_should_enqueue_assets filter.
+ *
+ * @return bool Whether AddConfirm front-end assets should be enqueued.
+ */
+function wpcf7c_should_enqueue_assets() {
+	static $should_enqueue = null;
+
+	if ( null !== $should_enqueue ) {
+		return $should_enqueue;
+	}
+
+	$query_posts = array();
+	$should_enqueue = is_admin();
+
+	if ( ! $should_enqueue ) {
+		global $wp_query;
+
+		if ( isset( $wp_query->posts ) && is_array( $wp_query->posts ) ) {
+			$query_posts = $wp_query->posts;
+		} else {
+			$current_post = get_post();
+
+			if ( $current_post ) {
+				$query_posts[] = $current_post;
+			}
+		}
+
+		foreach ( $query_posts as $post ) {
+			if ( ! isset( $post->post_content ) || ! is_string( $post->post_content ) ) {
+				continue;
+			}
+
+			$content = $post->post_content;
+			$has_cf7_shortcode = false;
+
+			if ( false !== strpos( $content, '[contact-form-7' ) ) {
+				$has_cf7_shortcode = ! function_exists( 'has_shortcode' )
+					|| has_shortcode( $content, 'contact-form-7' );
+			}
+
+			if ( function_exists( 'has_block' ) ) {
+				$has_cf7_block = has_block( 'contact-form-7/contact-form-selector', $content );
+			} else {
+				$has_cf7_block = false !== strpos( $content, 'contact-form-7/contact-form-selector' );
+			}
+
+			if ( $has_cf7_shortcode || $has_cf7_block ) {
+				$should_enqueue = true;
+				break;
+			}
+		}
+	}
+
+	$should_enqueue = (bool) apply_filters(
+		'wpcf7c_should_enqueue_assets',
+		$should_enqueue,
+		$query_posts
+	);
+
+	return $should_enqueue;
+}
+
+
 function wpcf7c_plugin_url( $path = '' ) {
 	$url = untrailingslashit( WPCF7C_PLUGIN_URL );
 

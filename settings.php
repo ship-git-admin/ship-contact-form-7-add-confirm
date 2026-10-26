@@ -28,6 +28,10 @@ function wpcf7c_nocache_headers($headers) {
 }
 
 function wpcf7c_enqueue_scripts() {
+	if ( ! wpcf7c_should_enqueue_assets() ) {
+		return;
+	}
+
 	$in_footer = true;
 	if ( 'header' === WPCF7_LOAD_JS )
 		$in_footer = false;
@@ -40,6 +44,10 @@ function wpcf7c_enqueue_scripts() {
 
 
 function wpcf7c_enqueue_styles(){
+	if ( ! wpcf7c_should_enqueue_assets() ) {
+		return;
+	}
+
 	wp_enqueue_style( 'contact-form-7-confirm',
 		wpcf7c_plugin_url( 'includes/css/styles.css' ),
 		array(), WPCF7C_VERSION, 'all' );

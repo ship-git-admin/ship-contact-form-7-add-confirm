@@ -7,7 +7,7 @@ Author: SHIPChatGPT
 Author URI: http://www.eyeta.jp/
 Text Domain: contact-form-7-add-confirm
 Domain Path: /languages/
-Version: 1.0.0
+Version: 1.0.1
 */
 
 /*  Copyright 2014- Yuichiro ABE (email: y.abe at eyeta.jp)
@@ -28,7 +28,7 @@ Version: 1.0.0
 */
 
 
-define( 'WPCF7C_VERSION', '1.0.0' );
+define( 'WPCF7C_VERSION', '1.0.1' );
 
 if ( ! defined( 'WPCF7C_PLUGIN_BASENAME' ) )
 	define( 'WPCF7C_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

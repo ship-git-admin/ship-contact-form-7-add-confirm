@@ -15,6 +15,17 @@ SHIPで管理する Contact Form 7 確認画面フォークです。上流の「
 
 通常リクエストではこのプラグインから no-cache ヘッダーを付けません。`_wpcf7c=step1` または `_wpcf7c=step2` の確認処理だけ、既存の no-cache ヘッダーを維持します。ホスティング側のページキャッシュが有効なら、フォームを含むページもキャッシュ候補になります。
 
+確認画面用のCSS/JSは、メインクエリの本文にContact Form 7のショートコードまたはブロックがあるページだけで読み込みます。ウィジェット、ページビルダーのメタデータ、テーマテンプレートなどからフォームを動的に出力する場合は、テーマやスニペットから `wpcf7c_should_enqueue_assets` フィルターで対象ページを追加してください。CF7フォームタグを登録するPHPモジュールは、フォームの解析に必要なためCF7が有効なリクエストで引き続き読み込みます。
+
+```php
+function ship_example_load_add_confirm_assets( $should_enqueue ) {
+	return $should_enqueue || is_page( 'contact' );
+}
+add_filter( 'wpcf7c_should_enqueue_assets', 'ship_example_load_add_confirm_assets' );
+```
+
+`contact` はフォームを動的に出力するページのスラッグに置き換えてください。サイト共通のウィジェットなどで全ページにフォームを出す場合は、`__return_true` を指定できます。
+
 ## ライセンス
 
 確認画面プラグイン本体は GPLv2 or later です。`lib/plugin-update-checker/` は同梱ライブラリ自身の `license.txt` を参照してください。

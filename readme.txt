@@ -4,7 +4,7 @@ Donate link:
 Tags: contact, form, contact form
 Requires at least: 3.8
 Tested up to: 4.9.3
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: contact-form-7-add-confirm
@@ -23,7 +23,7 @@ This plug-in is not related to the developer of the "Contact Form 7".
 == Installation ==
 
 1. If you have not yet, Install Contact Form 7 Plugin
-2. Upload the entire `contact-form-7-confirm` folder to the `/wp-content/plugins/` directory.
+2. Upload the entire `ship-contact-form-7-add-confirm` folder to the `/wp-content/plugins/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 
 For basic usage, you can also have a look at the [plugin homepage](http://www.eyeta.jp/archives/908).
@@ -38,6 +38,10 @@ An answer to that question.
 
 
 == Changelog ==
+1.0.1
+ CF7ショートコードまたはブロックがあるページだけで確認画面用CSS/JSを読み込むように変更
+ ウィジェット、ページビルダー、テンプレート向けの読み込み判定フィルターを追加
+
 1.0.0
  GitHub Release を使ったプラグイン画面からの更新に対応
  通常ページへの no-cache ヘッダー付与を停止し、確認ステップの応答に限定
@@ -152,5 +156,8 @@ An answer to that question.
  Contact Form 7 ver.5.0に対応
  
 == Upgrade notice ==
+1.0.1
+ 確認画面用CSS/JSをフォームのないページで読み込まないようにしました。動的にフォームを出力するサイトはREADMEのフィルターを確認してください。
+
 1.0.0
  SHIP管理のGitHub更新対応と、通常ページのno-cache範囲を修正
