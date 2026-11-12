@@ -38,7 +38,7 @@ function wpcf7c_enqueue_scripts() {
 
 	wp_enqueue_script( 'contact-form-7-confirm',
 		wpcf7c_plugin_url( 'includes/js/scripts.js' ),
-		array( 'jquery', 'jquery-form' ), WPCF7C_VERSION, $in_footer );
+		array( 'jquery', 'contact-form-7' ), WPCF7C_VERSION, $in_footer );
 
 }
 

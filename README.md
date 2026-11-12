@@ -19,6 +19,8 @@ SHIPで管理する Contact Form 7 確認画面フォークです。上流の「
 
 これ以外のウィジェット、ページビルダー、テーマテンプレートなどからフォームを動的に出力する場合は、テーマやスニペットから `wpcf7c_should_enqueue_assets` フィルターで対象ページを追加してください。
 
+確認画面から送信したときにCF7が送信失敗・スパム判定などを返した場合は、応答メッセージを表示します。入力エラーや同意不足では入力画面へ戻り、入力値を修正できます。この変更はエラーを見えるようにするもので、SMTP障害やスパム判定そのものを解消するものではありません。
+
 ```php
 function ship_example_load_add_confirm_assets( $should_enqueue ) {
 	return $should_enqueue || is_page( 'contact' );

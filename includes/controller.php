@@ -24,6 +24,8 @@ function wpcf7c_control_init() {
 	if ( isset( $_POST['_wpcf7c'] ) && 'step1' == $_POST["_wpcf7c"] ) {
 		remove_filter( 'wpcf7_ajax_onload', 'wpcf7_quiz_ajax_refill' );
 		remove_filter( 'wpcf7_ajax_json_echo', 'wpcf7_quiz_ajax_refill' );
+		remove_filter( 'wpcf7_refill_response', 'wpcf7_quiz_ajax_refill' );
+		remove_filter( 'wpcf7_feedback_response', 'wpcf7_quiz_ajax_refill' );
 	}
 
 	$confirm_step = '';
@@ -41,8 +43,10 @@ function wpcf7c_control_init() {
 
 
 function wpcf7c_ajax_json_echo() {
-	//error_log("wpcf7c_ajax_json_echo: " . $_POST['_wpcf7c']);
-	if ( isset( $_POST['_wpcf7c'] ) )
+	// CF7 5.2+ uses the REST response hook; keep the old hook only for older CF7.
+	$response_filter = version_compare( WPCF7_VERSION, '5.2', '>=' )
+		? 'wpcf7_feedback_response' : 'wpcf7_ajax_json_echo';
+	if ( isset( $_POST['_wpcf7c'] ) && is_string( $_POST['_wpcf7c'] ) )
 		switch ( $_POST["_wpcf7c"] ) {
 			case "step1":
 				//		$result = apply_filters( 'wpcf7_before_send_mail', $result );
@@ -56,7 +60,7 @@ function wpcf7c_ajax_json_echo() {
 				}
 
 				//$items = apply_filters( 'wpcf7_ajax_json_echo', $items, $result );
-				add_filter( "wpcf7_ajax_json_echo", "wpcf7c_ajax_json_echo_step1", 10, 3 );
+				add_filter( $response_filter, "wpcf7c_ajax_json_echo_step1", 20, 2 );
 
 				// flamingo対策
 				remove_action( 'wpcf7_submit', 'wpcf7_flamingo_submit' );
@@ -160,7 +164,7 @@ function wpcf7c_ajax_json_echo() {
 				break;
 			case "step2":
 				//$items = apply_filters( 'wpcf7_ajax_json_echo', $items, $result );
-				add_filter( "wpcf7_ajax_json_echo", "wpcf7c_ajax_json_echo_step2", 10, 3 );
+				add_filter( $response_filter, "wpcf7c_ajax_json_echo_step2", 20, 2 );
 
 
 				break;
@@ -296,7 +300,7 @@ function wpcf7c_captcha_validation_filter( $result, $tag ) {
 		}
 	}
 
-	if ( 0 != strlen( $prefix ) && $_POST["_wpcf7c"] == "step1" ) {
+	if ( 0 != strlen( $prefix ) && isset( $_POST['_wpcf7c'] ) && 'step1' === $_POST['_wpcf7c'] ) {
 	} else if ( 0 != strlen( $prefix ) ) {
 		wpcf7_remove_captcha( $prefix );
 	}
@@ -306,6 +310,10 @@ function wpcf7c_captcha_validation_filter( $result, $tag ) {
 
 
 function wpcf7c_ajax_json_echo_step2( $items, $result ) {
+	// Modern CF7 dispatches DOM events; onSubmit JavaScript is a legacy protocol.
+	if ( version_compare( WPCF7_VERSION, '5.0', '>=' ) ) {
+		return $items;
+	}
 	//eyeta_log("wpcf7c_ajax_json_echo_step1");
 	$flag = false;
 

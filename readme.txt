@@ -4,7 +4,7 @@ Donate link:
 Tags: contact, form, contact form
 Requires at least: 3.8
 Tested up to: 4.9.3
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: contact-form-7-add-confirm
@@ -38,6 +38,11 @@ An answer to that question.
 
 
 == Changelog ==
+1.0.3
+ 確認後の送信失敗・スパム判定などで応答メッセージを表示
+ 入力エラー・同意不足で入力画面に戻り、入力値を保持
+ CF7 5.2以降の応答フックとDOMイベントに対応
+
 1.0.2
  イベントテンプレートがPHPから出力するCF7フォームも読み込み判定に追加
  CF7選択かつ申込フォーム表示中・受付終了前のイベントページに限定して確認用CSS/JSを読み込み
